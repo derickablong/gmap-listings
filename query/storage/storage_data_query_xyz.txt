@@ -1,0 +1,18 @@
+SELECT * FROM(
+					  SELECT DISTINCT Addr, Ml_num,Zip, Ad_text,Municipality,County,Area,Timestamp_sql,Lp_dol,Br,Bath_tot, Type_own1_out as type_of_home,Municipality_district,	'rets_property_residentialproperty' as prop_type 
+					  FROM rets_property_residentialproperty
+					  WHERE CONCAT_WS(',', Community,Municipality,Ml_num,Zip,Rltr) LIKE '%RE/MAX URBAN TORONTO%'
+					   
+					  UNION
+					  SELECT DISTINCT Addr, Ml_num,Zip, Ad_text,Municipality,County,Area,Timestamp_sql,Lp_dol,Br,Bath_tot, Type_own1_out as type_of_home, Municipality_district, 'rets_property_condoproperty' as prop_type
+					  FROM rets_property_condoproperty
+					  WHERE CONCAT_WS(',', Community,Municipality,Ml_num,Zip,Rltr) LIKE '%RE/MAX URBAN TORONTO%'
+					   
+					  UNION
+					  SELECT DISTINCT Addr, Ml_num,Zip, Ad_text,Municipality,County,Area,Timestamp_sql,Lp_dol,Null as Br,Bath_tot, Prop_type as type_of_home, Municipality_district, 'rets_property_commercialproperty' as prop_type 
+					  FROM rets_property_commercialproperty
+					  WHERE CONCAT_WS(',', Community,Municipality,Ml_num,Zip,Rltr) LIKE '%RE/MAX URBAN TORONTO%'
+					   ) as property
+					  
+					  
+					  ORDER BY Timestamp_sql DESC
